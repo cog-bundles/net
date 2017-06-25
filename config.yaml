@@ -4,10 +4,10 @@ name: net
 description: "Simple network utilities"
 author: "Operable <support@operable.io>"
 homepage: "https://github.com/cogcmd/net"
-version: "0.2"
+version: "0.3.3"
 docker:
   image: "cogcmd/net"
-  tag: "0.2"
+  tag: "0.3.3"
 commands:
   dig:
     executable: "/bundle/dig.sh"
@@ -36,11 +36,34 @@ commands:
         description: "Enable the 'trace' query option. Disabled by default"
         type: bool
         required: false
+  whois:
+    executable: "/bundle/whois.sh"
+    description: "Whois query utility"
+    long_description: |
+      Simple wrapper for the `whois` command line utility.
+    arguments: "<domain>"
+    rules:
+      - "when command is net:whois allow"
+    options:
+      server:
+        description: "Whois server to query against."
+        type: string
+        required: false
+      port:
+        description: "Port on whois server"
+        type: string
+        required: false
+      short:
+        description: "Returns a terse answer only containing contact information"
+        type: bool
+        required: false
 templates:
   dig:
     body: |
       ~each var=$results~
-      ```~each var=$item.body as=l~
+      ```
+      ~each var=$item.body as=l~
       ~$l~
-      ~end~```
+      ~end~
+      ```
       ~end~
